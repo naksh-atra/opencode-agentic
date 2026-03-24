@@ -1,4 +1,4 @@
-# PROJECT_NAME Project Memory
+# Project Memory
 
 > Persistent context loaded on every session start
 > Add important context with `/learn` during or after sessions

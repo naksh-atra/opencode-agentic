@@ -6,7 +6,7 @@ Production-ready agentic toolkit for [OpenCode](https://opencode.ai) — clone, 
 
 A complete OpenCode configuration with:
 
-- **13 specialized agents** for code review, security, testing, architecture, and more
+- **15 specialized agents** for code review, security, testing, architecture, and more
 - **30+ slash commands** for development workflows
 - **29 skills** covering best practices across languages and frameworks
 - **Custom tools** for testing, coverage, security, and code formatting
@@ -14,68 +14,24 @@ A complete OpenCode configuration with:
 
 All tuned, tested, and ready to use in any project.
 
-## Quick Start (3 Steps)
-
-### Step 1: Clone
+## Quick Start (1 Command)
 
 ```bash
+# Run the setup script - it handles everything
+curl -sSL https://raw.githubusercontent.com/naksh-atra/opencode-agentic/main/setup.sh | bash -s /path/to/your-project
+
+# Or clone and setup manually:
 gh repo clone naksh-atra/opencode-agentic
 cd opencode-agentic
+./setup.sh /path/to/your-project
 ```
 
-### Step 2: Copy to Your Project
+That's it! The script:
+- Copies `.opencode/` to your project
+- Creates memory file with your project name
+- Adds memory file to OpenCode instructions
 
-```bash
-# Copy the .opencode directory to your project
-cp -r .opencode/ /path/to/your-project/
-```
-
-### Step 3: Set Up Memory
-
-```bash
-# Create memory file for your project
-PROJECT_NAME=$(basename "$PWD")
-mkdir -p .opencode/memory
-
-cat > ".opencode/memory/${PROJECT_NAME}.md" << EOF
-# ${PROJECT_NAME} Project Memory
-
-> Persistent context loaded on every session start
-> Add important context with \`/learn\` during or after sessions
-
----
-
-## Session: $(date +%Y-%m-%d)
-
-### Project Context
-- [Description of project purpose]
-
-### Key Decisions
-- [Architectural decisions]
-
-### Custom Patterns
-- [Project-specific conventions]
-
-### Open Issues
-- [Things to remember for next session]
-
----
-
-*This file is auto-loaded on session start. Use \`/learn\` to add new context.*
-EOF
-```
-
-Then update `opencode.json` to include your memory file:
-
-```json
-{
-  "instructions": [
-    ".opencode/memory/YOUR_PROJECT.md"
-  ]
-}
-```
-
-Done! Open your project in OpenCode and start coding.
+Open your project in OpenCode and start coding.
 
 ---
 
@@ -98,6 +54,8 @@ Done! Open your project in OpenCode and start coding.
 | go-reviewer | Go code review | subagent |
 | go-build-resolver | Go build errors | subagent |
 | database-reviewer | PostgreSQL optimization | subagent |
+| rust-reviewer | Rust code review | subagent |
+| rust-build-resolver | Rust build errors | subagent |
 
 ### 30+ Slash Commands
 
@@ -121,7 +79,10 @@ Done! Open your project in OpenCode and start coding.
 | `/setup-pm` | Configure package manager |
 | `/go-review` | Go code review |
 | `/go-test` | Go TDD workflow |
-| `/go-build` | Fix Go build errors |
+| `/go-build` | Go build errors |
+| `/rust-review` | Rust code review |
+| `/rust-test` | Rust TDD workflow |
+| `/rust-build` | Rust build errors |
 | `/skill-create` | Generate skills from git |
 | `/instinct-status` | View learned instincts |
 | `/instinct-import` | Import instincts |
@@ -226,20 +187,19 @@ Create a new command file in `.opencode/commands/` and add it to `opencode.json`
 ├── instructions/
 │   └── INSTRUCTIONS.md   # Core rules and guidelines
 ├── memory/
-│   └── PROJECT_NAME.md   # Project memory template
+│   └── MEMORY.md         # Project memory template
 ├── commands/
 │   └── *.md              # Slash command definitions
 ├── prompts/
 │   └── agents/
-│       └── *.txt          # Agent prompt templates
+│       └── *.txt         # Agent prompt templates
 ├── skills/
 │   └── */SKILL.md        # Best practice skill definitions
 ├── tools/
 │   └── *.ts              # Custom tool implementations
 ├── plugins/
-│   └── *.ts              # Plugin hooks and utilities
-└── plugins/
-    └── index.ts           # Plugin entry point
+│   ├── ecc-hooks.ts      # Plugin hooks
+│   └── index.ts          # Plugin entry point
 ```
 
 ---

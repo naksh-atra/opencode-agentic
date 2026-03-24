@@ -4,6 +4,7 @@
   "small_model": "anthropic/claude-haiku-4-5-20251001",
   "default_agent": "build",
   "instructions": [
+    "memory/MEMORY.md",
     "instructions/INSTRUCTIONS.md",
     "skills/tdd-workflow/SKILL.md",
     "skills/security-review/SKILL.md",
@@ -162,6 +163,28 @@
         "edit": true,
         "bash": true
       }
+    },
+    "rust-reviewer": {
+      "description": "Expert Rust code reviewer specializing in idiomatic Rust, ownership, lifetimes, concurrency patterns, and performance.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/rust-reviewer.txt}",
+      "tools": {
+        "read": true,
+        "bash": true,
+        "write": false,
+        "edit": false
+      }
+    },
+    "rust-build-resolver": {
+      "description": "Rust build, clippy, and compilation error resolution specialist. Fixes Rust build errors with minimal changes.",
+      "mode": "subagent",
+      "prompt": "{file:prompts/agents/rust-build-resolver.txt}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
     }
   },
   "command": {
@@ -268,6 +291,24 @@
       "description": "Fix Go build errors",
       "template": "{file:commands/go-build.md}\n\n$ARGUMENTS",
       "agent": "go-build-resolver",
+      "subtask": true
+    },
+    "rust-review": {
+      "description": "Rust code review",
+      "template": "{file:commands/rust-review.md}\n\n$ARGUMENTS",
+      "agent": "rust-reviewer",
+      "subtask": true
+    },
+    "rust-test": {
+      "description": "Rust TDD workflow",
+      "template": "{file:commands/rust-test.md}\n\n$ARGUMENTS",
+      "agent": "tdd-guide",
+      "subtask": true
+    },
+    "rust-build": {
+      "description": "Fix Rust build errors",
+      "template": "{file:commands/rust-build.md}\n\n$ARGUMENTS",
+      "agent": "rust-build-resolver",
       "subtask": true
     },
     "skill-create": {

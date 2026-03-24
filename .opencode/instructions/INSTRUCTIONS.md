@@ -1,6 +1,6 @@
-# Everything Claude Code - OpenCode Instructions
+# OpenCode Agentic - Instructions
 
-This document consolidates the core rules and guidelines from the Claude Code configuration for use with OpenCode.
+This document contains the core rules and guidelines for OpenCode agentic workflows.
 
 ## Security Guidelines (CRITICAL)
 
